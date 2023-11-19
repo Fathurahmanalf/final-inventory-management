@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from './Navbar';
 import Footer from './Footer';
-import '../style/login.css'
+import '../style/index.css'
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('');

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../style/login.css';
+import '../style/index.css';
 import registerImg from '../assest/ps5Controller.jpg';
 
 const Register = () => {
