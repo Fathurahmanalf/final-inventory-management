@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../style/login.css';
+import '../style/index.css';
 import loginImg from '../assest/pexels-ehsan-ahmadnejad-1371985.jpg';
 
 const Login = () => {

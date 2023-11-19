@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import "../../style/AddProduct.css";
+import "../../style/index.css";
 import Navbar from '../Navbar';
 
 const AddProduct = () => {

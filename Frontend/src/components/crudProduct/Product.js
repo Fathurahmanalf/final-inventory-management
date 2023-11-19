@@ -3,7 +3,7 @@ import axios from 'axios';
 import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
-import '../../style/Product.css';
+import '../../style/index.css';
 
 
 const Product = () => {
