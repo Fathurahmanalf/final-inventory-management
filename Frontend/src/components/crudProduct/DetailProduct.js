@@ -47,11 +47,10 @@ const DetailProduct = () => {
                     <div key={index} className="column is-one-third">
                         <div className="card">
                             <div className="card-content">
-                                <p className="title">{product.name_product}</p>
+                                <p className="title">{product.version}</p>
                                 <p className="subtitle">Version: {product.name_version}</p>
                                 <p>User: {product.name_user}</p>
                                 <p>Stock: {product.stock}</p>
-                                <p>Amount: {product.amount}</p>
                                 <p>Created At: {product.createdAt}</p>
                             </div>
                             <footer className="card-footer">

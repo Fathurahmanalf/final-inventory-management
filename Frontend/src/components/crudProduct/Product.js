@@ -4,12 +4,15 @@ import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import '../../style/index.css';
+import Popup from './Edit';
+import Swal from 'sweetalert2';
 
 
 const Product = () => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [sortOption, setSortOption] = useState('version'); // Default sorting option
+    const [isOpenPopup, setIsOpenPopup] = useState(false);
 
     const isStaff = jwtDecode(localStorage.getItem("token")).data.role == "Staff"
     console.log(jwtDecode)
@@ -71,20 +74,45 @@ const Product = () => {
     const deleteProduct = async (id) => {
         try {
             const token = localStorage.getItem('token');
+    
+            if (!token) {
+                console.error("Token not found. User may not be authenticated.");
+                return;
+            }
+    
             console.log("Token for deletion:", token);
-
+    
             await axios.delete(`http://localhost:5000/products/${id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-
+    
             console.log(`Product with ID ${id} deleted successfully`);
-
+    
+            // Assuming setProducts is a state updater function
             setProducts((prevProducts) => prevProducts.filter((product) => product.id !== id));
         } catch (error) {
             console.error("Error during deletion:", error);
         }
+
+        Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!"
+          }).then((result) => {
+            if (result.isConfirmed) {
+              Swal.fire({
+                title: "Deleted!",
+                text: "Your file has been deleted.",
+                icon: "success"
+              });
+            }
+          });
     };
 
     const showProductDetails = (product) => {
@@ -109,6 +137,8 @@ const Product = () => {
 
         setProducts(sortedProducts);
     };
+
+
 
     return (
         <section className='bg-slate-800'>
@@ -164,14 +194,9 @@ const Product = () => {
                                                 Delete
                                             </button>
                                         }
-
-
-                                        <Link
-                                            to={`edit/${product.id}`}
-                                            className="btn btn-warning text-white font-semibold mx-2"
-                                        >
-                                            Edit
-                                        </Link>
+                                         <button onClick={setIsOpenPopup.bind(this, true)} className="btn btn-info text-white font-semibold mx-2"
+                                            >Edit</button>
+                                         {isOpenPopup && <Popup setIsOpenPopup={setIsOpenPopup} />}
                                     </td>
                                 </tr>
                             ))}

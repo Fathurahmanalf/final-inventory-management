@@ -3,7 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import "../../style/index.css";
-import Navbar from '../Navbar';
+
 
 const AddProduct = () => {
   const [Version, setVersion] = useState("");
@@ -53,7 +53,6 @@ const AddProduct = () => {
 
   return (
     <section className="bg-slate-800 h-screen">
-      <Navbar />
       <div className="flex justify-center items-center">
         <div className="max-w-xl mx-auto w-full">
           <form
