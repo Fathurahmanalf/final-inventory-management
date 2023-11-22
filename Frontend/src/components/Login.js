@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/index.css';
-import loginImg from '../assest/pexels-ehsan-ahmadnejad-1371985.jpg';
+import loginImg from '../assest/tes/login.jpg';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -46,7 +46,7 @@ const Login = () => {
                     <img className="w-full h-full object-cover" src={loginImg} alt=""></img>
                 </div>
 
-                <div className="bg-gray-800 flex flex-col justify-center">
+                <div className="bg-[#03001C] flex flex-col justify-center">
                     <form onSubmit={handleLogin} className="max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg">
                         <h2 className="text-4xl dark:text-white font-bold text-center">SIGN IN</h2>
                         {msg && <p className="text-red-500 text-center mb-2">{msg}</p>}

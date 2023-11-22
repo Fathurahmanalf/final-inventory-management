@@ -1,7 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+/* @import url('https://fonts.googleapis.com/css2?family=PT+Sans+Narrow&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Play&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 .drawer {
     z-index: 1;
+}
+
+* {
+    font-family: 'Play', sans-serif;
+}
+
+.dashboard>h1 {
+    font-family: 'Orbitron', sans-serif;
 }

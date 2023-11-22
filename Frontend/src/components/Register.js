@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../style/index.css';
-import registerImg from '../assest/ps5Controller.jpg';
+import registerImg from '../assest/tes/registrasi.jpg';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -39,7 +39,7 @@ const Register = () => {
         <section>
             <div className="grid grid-cols-1 sm:grid-cols-2 h-screen w-full">
 
-                <div className="bg-gray-800 flex flex-col justify-center">
+                <div className="bg-[#03001C]  flex flex-col justify-center">
                     <form onSubmit={handleRegister} className="max-w-[400px] w-full mx-auto bg-gray-900 p-8 px-8 rounded-lg">
                         <h2 className="text-4xl dark:text-white font-bold text-center">RERGISTER</h2>
                         <p>{msg}</p>

@@ -4,15 +4,14 @@ import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import { jwtDecode } from "jwt-decode";
 import '../../style/index.css';
-import Popup from './Edit';
-import Swal from 'sweetalert2';
+import backgroundProduct from '../../assest/tes/Product.png'
+
 
 
 const Product = () => {
     const [products, setProducts] = useState([]);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [sortOption, setSortOption] = useState('version'); // Default sorting option
-    const [isOpenPopup, setIsOpenPopup] = useState(false);
 
     const isStaff = jwtDecode(localStorage.getItem("token")).data.role == "Staff"
     console.log(jwtDecode)
@@ -80,6 +79,13 @@ const Product = () => {
                 return;
             }
     
+            // Konfirmasi pengguna sebelum menghapus
+            const userConfirmed = window.confirm("Are you sure you want to delete this product?");
+    
+            if (!userConfirmed) {
+                return; // Pengguna membatalkan penghapusan
+            }
+    
             console.log("Token for deletion:", token);
     
             await axios.delete(`http://localhost:5000/products/${id}`, {
@@ -95,25 +101,8 @@ const Product = () => {
         } catch (error) {
             console.error("Error during deletion:", error);
         }
-
-        Swal.fire({
-            title: "Are you sure?",
-            text: "You won't be able to revert this!",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "Yes, delete it!"
-          }).then((result) => {
-            if (result.isConfirmed) {
-              Swal.fire({
-                title: "Deleted!",
-                text: "Your file has been deleted.",
-                icon: "success"
-              });
-            }
-          });
     };
+    
 
     const showProductDetails = (product) => {
         setSelectedProduct(product);
@@ -134,14 +123,14 @@ const Product = () => {
             // Sort by date (assuming createdAt is in ISO format)
             sortedProducts.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         }
-
+        
         setProducts(sortedProducts);
     };
 
 
 
     return (
-        <section className='bg-slate-800'>
+        <section className="hero is-fullheight" style={{ background: `url(${backgroundProduct})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <Navbar />
             <div className="container mx-auto h-screen">
                 <div className="mb-4">
@@ -177,7 +166,7 @@ const Product = () => {
                                     <td className="border px-4 py-2">{product.User.name}</td>
                                     <td className="border px-4 py-2">{productQty(product.Logs)}</td>
                                     {/* <td className="border px-4 py-2">{JSON.stringify(product.Logs)}</td> */}
-                                    <td className="border px-4 py-2">{product.createdAt}</td>
+                                    <td className="border px-4 py-2">{new Date(product.createdAt).toLocaleDateString()}</td>
                                     <td className="border px-4 py-2">
                                         <button
                                             onClick={() => showProductDetails(product)}
@@ -194,9 +183,12 @@ const Product = () => {
                                                 Delete
                                             </button>
                                         }
-                                         <button onClick={setIsOpenPopup.bind(this, true)} className="btn btn-info text-white font-semibold mx-2"
-                                            >Edit</button>
-                                         {isOpenPopup && <Popup setIsOpenPopup={setIsOpenPopup} />}
+                                            <Link
+                                            to={`edit/${product.id}`}
+                                            className="btn btn-info text-white font-semibold mx-2"
+                                            >
+                                                Edit
+                                            </Link>
                                     </td>
                                 </tr>
                             ))}

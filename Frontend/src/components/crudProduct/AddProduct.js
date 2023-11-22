@@ -12,13 +12,10 @@ const AddProduct = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Di sini, kita ambil dan cetak token setiap kali komponen dipasang
     const token = localStorage.getItem("token");
     console.log("Token:", token);
     console.log(jwtDecode(token));
-
-    // Jika Anda perlu melakukan sesuatu dengan token setiap kali halaman baru dimuat, Anda dapat melakukannya di sini.
-  }, []); // Array kosong menandakan bahwa efek ini hanya berjalan saat komponen dipasang (seperti componentDidMount).
+  }, []);
 
   const createProduct = async (e) => {
     e.preventDefault();

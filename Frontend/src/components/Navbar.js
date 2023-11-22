@@ -37,19 +37,55 @@ const Navbar = () => {
           </label>
         </div>
         <div className="drawer-side">
-          <label
-            htmlFor="my-drawer-4"
-            aria-label="close sidebar"
-            className="drawer-overlay"
-          ></label>
-          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content text-lg font-semibold">
-            {/* Sidebar content here */}
-            <li><Link to="/dashboard" className="text-black my-3 border-solid border-2 border-sky-800"> <GoHomeFill /> Home </Link></li>
-            <li><Link to="/product" className="text-black my-3 border-solid border-2 border-sky-800"> <FaDatabase /> Products </Link></li>
-            <li><a href="https://kelompok-sipaling.vercel.app/" className="text-black my-3 border-solid border-2 border-sky-800"> <RiTeamFill /> Team </a></li>
-            <li><a href="#" className="text-black my-3 border-solid border-2 border-sky-800" onClick={handleLogout}> <IoLogOut /> Logout</a></li>
-          </ul>
-        </div>
+  <label
+    htmlFor="my-drawer-4"
+    aria-label="close sidebar"
+    className="drawer-overlay"
+  ></label>
+  <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content text-lg font-semibold">
+    {/* Search bar */}
+    <li>
+      <input
+        type="text"
+        placeholder="Search..."
+        className="w-full p-2 mb-2 border-solid border-2 border-sky-800"
+        // Add your search logic or function here
+      />
+    </li>
+
+    {/* Sidebar content here */}
+    <li>
+      <Link to="/dashboard" className="text-black my-3 border-solid border-2 border-sky-800">
+        <GoHomeFill /> Home
+      </Link>
+    </li>
+    <li>
+      <Link to="/product" className="text-black my-3 border-solid border-2 border-sky-800">
+        <FaDatabase /> Products
+      </Link>
+    </li>
+    <li>
+      <Link to="/logs" className="text-black my-3 border-solid border-2 border-sky-800">
+        <FaDatabase /> Log Activity
+      </Link>
+    </li>
+    <li>
+      <a href="https://kelompok-sipaling.vercel.app/" className="text-black my-3 border-solid border-2 border-sky-800">
+        <RiTeamFill /> Team
+      </a>
+    </li>
+    <li>
+      {/* Additional sidebar items go here */}
+    </li>
+    <li>
+      {/* Add margin to create space */}
+      <a href="#" className="text-black my-3 border-solid border-2 border-sky-800 mt-6" onClick={handleLogout} style={{ marginBottom: '20px' }}>
+        <IoLogOut /> Logout
+      </a>
+    </li>
+  </ul>
+</div>
+
       </div>
     </nav>
 
