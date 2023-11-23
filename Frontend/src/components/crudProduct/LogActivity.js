@@ -5,17 +5,15 @@ import { jwtDecode } from "jwt-decode";
 import '../../style/index.css';
 import backgroundHistory from '../../assest/history.jpg';
 
-
-
+const itemsPerPage = 10; // Ubah sesuai kebutuhan Anda
 
 const LogActivity = () => {
     const [historys, setHistorys] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
     const [selectedHistory, setSelectedHistory] = useState(null);
     const [sortOption, setSortOption] = useState('version');
 
-    const isStaff = jwtDecode(localStorage.getItem("token")).data.role == "Staff"
-    console.log(jwtDecode)
-    console.log(jwtDecode(localStorage.getItem("token")))
+    const isStaff = jwtDecode(localStorage.getItem("token")).data.role === "Staff";
 
     useEffect(() => {
         fetchHistorys();
@@ -24,7 +22,6 @@ const LogActivity = () => {
     const fetchHistorys = async () => {
         try {
             const token = localStorage.getItem('token');
-            console.log("Token:", token);
 
             if (!token) {
                 return;
@@ -42,17 +39,6 @@ const LogActivity = () => {
         }
     };
 
-
-    // const historyQty = (historyQty)  => historyQty.reduce((a, b) => a.qty + b.qty);
-
-    // const historyQty = (qty) => {
-    //     let total = 0;
-    //     qty.forEach(data => total += data.qty)
-    //     return total
-    // }
-
-    
-
     const showHistoryDetails = (history) => {
         setSelectedHistory(history);
     };
@@ -66,32 +52,30 @@ const LogActivity = () => {
         let sortedHistorys = [...historys];
 
         if (option === 'version') {
-            // Sort by version
             sortedHistorys.sort((a, b) => a.name_version.localeCompare(b.name_version));
         } else if (option === 'date') {
-            // Sort by date (assuming createdAt is in ISO format)
             sortedHistorys.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         }
 
         setHistorys(sortedHistorys);
     };
 
+    const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
 
+    const totalItems = historys.length;
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    const visibleHistorys = historys.slice(
+        (currentPage - 1) * itemsPerPage,
+        currentPage * itemsPerPage
+    );
 
     return (
         <section className="hero is-fullheight" style={{ background: `url(${backgroundHistory})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
             <Navbar />
             <div className="container mx-auto h-screen p-6">
-                <div className="mb-4 flex justify-end">
-                    <select
-                        value={sortOption}
-                        onChange={handleSortChange}
-                        className="select select-bordered w-40 max-w-xs select-info text-black font-semibold">
-                        <option value="version">Sort by Version</option>
-                        <option value="date">Sort by Date</option>
-                    </select>
-                </div>
-
                 <div className="overflow-x-auto">
                     <table className="table w-full bg-white shadow-lg rounded-lg">
                         <thead className="bg-gray-800 text-white">
@@ -104,7 +88,7 @@ const LogActivity = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {historys.map((history, index) => (
+                            {visibleHistorys.map((history, index) => (
                                 <tr key={index} className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}>
                                     <td className="border px-6 py-4">{history.Product.productName}</td>
                                     <td className="border px-6 py-4">{history.User.name}</td>
@@ -115,6 +99,21 @@ const LogActivity = () => {
                             ))}
                         </tbody>
                     </table>
+                </div>
+
+                {/* Kontrol Pagination */}
+                <div className="mt-4 flex justify-end">
+                    <nav className="pagination">
+                        {Array.from({ length: totalPages }).map((_, index) => (
+                            <a
+                                key={index}
+                                className={`pagination-link ${currentPage === index + 1 ? 'is-current' : ''}`}
+                                onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </a>
+                        ))}
+                    </nav>
                 </div>
             </div>
         </section>

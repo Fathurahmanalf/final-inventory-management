@@ -1,21 +1,16 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
-import "../../style/index.css";
-
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import Swal from 'sweetalert2';
+import Navbar from '../Navbar';
+import { MdError } from 'react-icons/md';
 
 const AddProduct = () => {
-  const [Version, setVersion] = useState("");
-  const [Product, setProduct] = useState("");
-  const [Stock, setStock] = useState("");
+  const [versionId, setVersionId] = useState("");
+  const [productName, setProductName] = useState("");
+  const [qty, setQty] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    console.log("Token:", token);
-    console.log(jwtDecode(token));
-  }, []);
 
   const createProduct = async (e) => {
     e.preventDefault();
@@ -28,12 +23,12 @@ const AddProduct = () => {
         return;
       }
 
-      await axios.post(
+      const response = await axios.post(
         "http://localhost:5000/products",
         {
-          versionId: Version,
-          productName: Product,
-          qty: Stock,
+          versionId: versionId,
+          productName: productName,
+          qty: qty,
         },
         {
           headers: {
@@ -41,16 +36,30 @@ const AddProduct = () => {
           },
         }
       );
+      Swal.fire({
+        position: 'top-center',
+        icon: 'success',
+        title: 'Your work has been saved',
+        showConfirmButton: false,
+        timer: 2000
+      });
 
       navigate("/product");
     } catch (error) {
-      console.error("Error:", error);
+      if (error.response && error.response.data && error.response.data.message) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: errorMessage || 'Check your data again!',
+        });
+      }
     }
   };
 
   return (
-    <section className="bg-slate-800 h-screen">
-      <div className="flex justify-center items-center">
+    <section className="bg-slate-800 min-h-screen flex flex-col">
+      <Navbar />
+      <div className="flex-grow flex items-center justify-center">
         <div className="max-w-xl mx-auto w-full">
           <form
             className="bg-white shadow-md rounded px-5 pt-6 pb-8 mb-4"
@@ -66,8 +75,8 @@ const AddProduct = () => {
               <select
                 className="shadow appearance-none border rounded w-full py-2 px-3 text-black bg-white leading-tight focus:outline-none focus:shadow-outline"
                 id="version"
-                value={Version}
-                onChange={(e) => setVersion(e.target.value)}
+                value={versionId}
+                onChange={(e) => setVersionId(e.target.value)}
               >
                 <option value="" disabled selected></option>
                 <option value="1">Playstation 1</option>
@@ -90,8 +99,8 @@ const AddProduct = () => {
                 id="product"
                 type="text"
                 placeholder="Product"
-                value={Product}
-                onChange={(e) => setProduct(e.target.value)}
+                value={productName}
+                onChange={(e) => setProductName(e.target.value)}
               />
             </div>
 
@@ -107,12 +116,18 @@ const AddProduct = () => {
                 id="stock"
                 type="text"
                 placeholder="Stock"
-                value={Stock}
-                onChange={(e) => setStock(e.target.value)}
+                value={qty}
+                onChange={(e) => setQty(e.target.value)}
               />
             </div>
 
-            <div className="flex items-center justify-between">
+            {errorMessage && (
+              <div role="alert" className="text-black text-md font-light alert alert-warning my-5">
+              <p className='flex justify-center items-center text-black text-sm'> <MdError /> {errorMessage}</p>
+              </div>
+            )}
+
+            <div className="flex items-center justify-center">
               <button
                 className="btn btn-info w-full text-white font-bold"
                 type="submit"
